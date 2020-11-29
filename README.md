@@ -1,1 +1,3 @@
-jeeves-client
+# Ermiry's Jeeves Client
+
+jeeves.ermiry.com
