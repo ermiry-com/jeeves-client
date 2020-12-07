@@ -24,7 +24,7 @@ export default function (state = initialState, action) {
 		case JOBS_GET:
 			return {
 				...state,
-				JOBs: action.payload,
+				jobs: action.payload,
 				loading: false
 			};
 		case JOB_UPDATE:
@@ -35,7 +35,7 @@ export default function (state = initialState, action) {
 		case JOB_GET:
 			return {
 				...state,
-				JOB: action.payload,
+				job: action.payload,
 				loading: false
 			}
 		
