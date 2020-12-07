@@ -14,7 +14,7 @@ import Spinner from '../common/Spinner';
 import TextField from '../input/TextField';
 import TextArea from '../input/TextArea';
 
-import { job_get_by_id, job_update_type } from '../../actions/jobsActions';
+import { job_get_by_id, job_update_type, job_upload } from '../../actions/jobsActions';
 
 class Job extends Component {
 
@@ -100,7 +100,7 @@ class Job extends Component {
                         <div className="form-group row mt-5 ml-1">
                             <h3 htmlFor="inputState">Processes</h3>
                             <div className="col-sm-4 ml-3">
-                                <select id="inputState" defaultValue={job.type}
+                                <select id="inputState" defaultValue={process_values[job.type]}
                                    className="form-control" onChange={this.handleSubmit}>
                                     <option value="NONE">Choose...</option>
                                     {processItem}
@@ -108,7 +108,7 @@ class Job extends Component {
                             </div>
                         </div>
 
-                        <Previews />
+                        <Previews job_id={job._id.$oid}  job_upload={this.props.job_upload}/>
 
                     </div>
                 </div>
@@ -155,7 +155,7 @@ const img = {
     height: '100%'
 };
 
-function Previews() {
+function Previews(props) {
     const [files, setFiles] = useState([]);
     const {getRootProps, getInputProps} = useDropzone({
       accept: 'image/*',
@@ -207,7 +207,13 @@ function Previews() {
             
             
           </div>
-          <button className={files.length > 0 ? "btn btn-lg btn-block btn-info mt-2" : "btn btn-lg btn-block btn-secondary mt-2"}>Upload</button>
+          <button onClick={()=>props.job_upload({
+            files: files,
+            id: props.job_id
+          })}
+            className={files.length > 0 
+              ? "btn btn-lg btn-block btn-info mt-2" 
+              : "btn btn-lg btn-block btn-secondary mt-2"}>Upload</button>
         </section>
       );
 }
@@ -224,5 +230,5 @@ const mapStateToProps = state => ({
 
 export default compose(
     withRouter,
-    connect (mapStateToProps, { job_get_by_id, job_update_type }) 
+    connect (mapStateToProps, { job_get_by_id, job_update_type, job_upload }) 
 )(Job);
