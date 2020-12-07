@@ -25,26 +25,26 @@ class Navbar extends Component {
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item dropdown">
                     <a className="navbar-brand dropdown-toggle text-white" 
-                    data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" target="_top">
+                        data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" target="_top">
                         My Account
                     </a>
                     <div className="dropdown-menu dropdown-menu-right main-red-background">
                         <a className="font-20px dropdown-item text-white" 
                             href={process.env.NODE_ENV === "production" ? 
                             "https://ermiry.com/profile" : "http://localhost.com/profile"}>
-                            Profile <i class="fas fa-user float-right"></i>
+                            Profile <i className="fas fa-user float-right"></i>
                         </a>
 
                         <a className="font-20px dropdown-item text-white" 
                             href={process.env.NODE_ENV === "production" ? 
                             "https://ermiry.com/dashboard" : "http://localhost.com/dashboard"}>
-                            Dashboard <i class="fas fa-home float-right"></i>
+                            Dashboard <i className="fas fa-home float-right"></i>
                         </a>
 
                         <a className="font-20px dropdown-item text-white" 
                             href={process.env.NODE_ENV === "production" ? 
                             "https://ermiry.com/settings" : "http://localhost.com/settings"}>
-                            Settings <i class="fas fa-cog float-right"></i>
+                            Settings <i className="fas fa-cog float-right"></i>
                         </a>
 
                         <div className="dropdown-divider"></div>
@@ -53,7 +53,7 @@ class Navbar extends Component {
                                 href={process.env.NODE_ENV === "production" ? 
                                 "https://ermiry.com/settings" : "http://localhost.com/settings"} 
                                 onClick={ this.onLogOutClick.bind (this) }>
-                                Logout <i class="fas fa-sign-out-alt float-right"></i>
+                                Logout <i className="fas fa-sign-out-alt float-right"></i>
                             </a>
                         </div>
                     </div>
