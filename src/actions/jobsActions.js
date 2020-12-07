@@ -55,6 +55,21 @@ export const jobs_create  = (payload) => dispatch => {
     })
 }
 
+export const job_update_type = (payload) => dispatch => {
+    dispatch(jobs_set_loading());
+    console.log(payload);
+    axios.post(`/api/jeeves/jobs/${payload.id}/config`, {
+        type: payload.type
+    }).then((res) => {
+        // dispatch(job_get_by_id(payload.id));
+    }).catch(err => {
+        dispatch ({
+            type: JOB_GET,
+            payload: null
+        });
+    })
+}
+
 // get single job info by its id
 export const job_get_by_id = id => dispatch => {
 
