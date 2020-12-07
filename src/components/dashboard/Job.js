@@ -114,27 +114,27 @@ const thumbsContainer = {
   };
   
 const thumb = {
-display: 'inline-flex',
-borderRadius: 2,
-border: '1px solid #eaeaea',
-marginBottom: 8,
-marginRight: 8,
-width: 100,
-height: 100,
-padding: 4,
-boxSizing: 'border-box'
+    display: 'inline-flex',
+    borderRadius: 2,
+    border: '1px solid #eaeaea',
+    marginBottom: 8,
+    marginRight: 8,
+    width: 100,
+    height: 100,
+    padding: 4,
+    boxSizing: 'border-box'
 };
 
 const thumbInner = {
-display: 'flex',
-minWidth: 0,
-overflow: 'hidden'
+    display: 'flex',
+    minWidth: 0,
+    overflow: 'hidden'
 };
 
 const img = {
-display: 'block',
-width: 'auto',
-height: '100%'
+    display: 'block',
+    width: 'auto',
+    height: '100%'
 };
 
 function Previews(props) {
@@ -168,7 +168,7 @@ function Previews(props) {
         <section className="container">
           <div {...getRootProps({className: 'dropzone'})}>
             <input {...getInputProps()} />
-            <p>Drag 'n' drop some files here, or click to select files</p>
+            <p>Drag 'n' drop your images here, or click to select files</p>
           </div>
           <aside style={thumbsContainer}>
             {thumbs}
