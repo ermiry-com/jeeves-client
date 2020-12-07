@@ -2,8 +2,10 @@ import {
 	JOB_LOADING,
 	JOBS_GET,
 	JOB_GET,
+	JOB_UPDATE_TYPE,
 	JOB_ADMIN_ADD,
 	JOB_UPDATE,
+	JOB_UPLOAD,
 } from '../actions/types';
 
 const initialState = {
@@ -21,6 +23,11 @@ export default function (state = initialState, action) {
 				...state,
 				loading: true
 			};
+		case JOB_UPLOAD: 
+			return {
+				...state,
+				loading: false
+			};
 		case JOBS_GET:
 			return {
 				...state,
@@ -31,6 +38,11 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				loading: false
+			};
+		case JOB_UPDATE_TYPE: 
+			return {
+				...state,
+				[state.job.type]: action.payload
 			}
 		case JOB_GET:
 			return {

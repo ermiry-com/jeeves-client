@@ -3,7 +3,8 @@ import axios from 'axios';
 import {
 	ERRORS_GET,
     ERRORS_CLEAR,
-
+    JOB_UPDATE,
+    JOB_UPDATE_TYPE,
 	JOB_LOADING,
 	JOBS_GET,
     JOB_GET,
@@ -51,16 +52,18 @@ export const jobs_create  = (payload) => dispatch => {
         dispatch(jobs_get_all());
     }).catch(err => {
         console.error(err.response.data);
-        dispatch(alert_set ("Fail on job creation, please retry", 'danger'));
+        dispatch(alert_set ("Failed to create a job, please retry", 'danger'));
     })
 }
 
 export const job_update_type = (payload) => dispatch => {
-    dispatch(jobs_set_loading());
-    console.log(payload);
     axios.post(`/api/jeeves/jobs/${payload.id}/config`, {
         type: payload.type
     }).then((res) => {
+        dispatch({
+            type: JOB_UPDATE,
+            payload: payload.type
+        })
         // dispatch(job_get_by_id(payload.id));
     }).catch(err => {
         dispatch ({
@@ -68,6 +71,29 @@ export const job_update_type = (payload) => dispatch => {
             payload: null
         });
     })
+}
+
+export const job_upload = (payload) => dispatch => {
+    let formData = new FormData();
+    payload.files.forEach((f,i) => {
+        formData.append(`f-${i}`, f[0], f[0].name);
+    }) 
+    dispatch(jobs_set_loading());
+    axios.post(`/api/jeeves/jobs/${payload.id}/upload`, formData)
+    .then(() => {
+        window.location.href = "/jobs";
+        dispatch({
+            type: JOB_GET,
+            payload: null
+        })
+    }).catch(err => {
+        console.error(err);
+        dispatch({
+            type: JOB_GET,
+            payload: null
+        })
+        dispatch(alert_set ("Failed to upload photos, retry later", 'danger'));
+    });
 }
 
 // get single job info by its id
