@@ -99,6 +99,12 @@ class Navbar extends Component {
                     </button>
                 
                     <div className="collapse navbar-collapse" id="mobile-nav">
+                        <ul className="navbar-nav mr-auto">
+                            <li className="nav-item">
+                                <a className="navbar-brand text-white" href="/jobs" target="_top">Jobs</a>
+                            </li>
+                        </ul>
+
                         { isAuthenticated ? authLinks : guestLinks }
                     </div>
                 </div>

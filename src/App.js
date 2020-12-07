@@ -8,6 +8,13 @@ import store from './store';
 // main components
 import Landing from './components/main/Landing';
 
+// auth components
+import Login from './components/auth/Login';
+
+// dashboard
+import Jobs from './components/dashboard/Jobs';
+import Job from './components/dashboard/Job';
+
 // other
 import NotFound from './router/NotFound'
 // import PrivateRoute from './router/PrivateRoute';
@@ -27,6 +34,13 @@ class App extends Component {
 						<Switch>
 							{/* Main */}
 							<Route exact path='/' component={ Landing } />
+
+							{/* Main */}
+							<Route exact path="/login" component={ Login } />
+
+							{/* Dashboard */}
+							<Route exact path="/jobs" component={ Jobs } />
+							<Route exact path="/job/:job_id" component={ Job } />
 
 							{/* Other */}
 							<Route exact path='/404' component={ NotFound } />
