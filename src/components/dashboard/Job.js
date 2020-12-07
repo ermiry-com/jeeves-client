@@ -74,7 +74,14 @@ class Job extends Component {
                 <h1>Job {job._id.$oid}</h1>
                 <div className="card">
                     <div className="card-body">
-                        <h5 style={{textAlign: "right"}}>Waiting</h5>
+                      <h5 style={{textAlign: "right"}}>{job.status === 0 
+                        ? "None" 
+                        : job.status === 1 ? "Waiting"
+                        : job.status === 2 ? "Ready"
+                        : job.status === 3 ? "Running"
+                        : job.status === 6 ? "Finished"
+                        : "None"
+                      }</h5>
                         <h2><span > Name:  </span>{job.name}</h2>
                         <h2>Description: {job.description}</h2>
 
