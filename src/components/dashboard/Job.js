@@ -1,11 +1,11 @@
 import React, { Component, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import {useDropzone} from 'react-dropzone';
+import Dropzone, {useDropzone} from 'react-dropzone';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-
+import Moment from 'react-moment';
 import Navbar from '../main/Navbar'
 import Footer from '../main/Footer';
 
@@ -14,70 +14,85 @@ import Spinner from '../common/Spinner';
 import TextField from '../input/TextField';
 import TextArea from '../input/TextArea';
 
-import { job_get_by_id } from '../../actions/jobsActions';
+import { job_get_by_id, job_update_type } from '../../actions/jobsActions';
 
 class Job extends Component {
 
-    componentDidMount () {
-        // gets job id from url
-        const job_id = this.props.match.params.job_id;
+  constructor(props){
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-        // request for a single job
-        this.props.job_get_by_id (job_id); 
-    }
+  componentDidMount () {
+      // gets job id from url
+      const job_id = this.props.match.params.job_id;
 
-    render () {
-        const job = this.props.jobs.job;
-        const jobs_loading = this.props.jobs.loading;
+      // request for a single job
+      this.props.job_get_by_id (job_id); 
+  }
 
-        const processes = ['Process 1', 'Process 2', 'Process 3', 'Process 4'];
-        const processItem = processes.map((process) =>
-            <option>{process}</option>
-        );
+  handleSubmit(e){
+    e.preventDefault();
+    const job_id = this.props.match.params.job_id;
+    this.props.job_update_type({id: job_id ,type: e.target.value});
+  }
 
-        
+  render () {
+      const job = this.props.jobs.job;
+      const jobs_loading = this.props.jobs.loading;
 
-        // TODO:
-        // let content = <div className="container"><Spinner /></div>;
+      const processes = ['GrayScale', 'Shift', 'Clamp', 'RGB to HUE'];
+      const process_values = [ 'GRAYSCALE', 'SHIFT', 'CLAMP', 'RGB_TO_HUE'];
+      const processItem = processes.map((process, idx) =>
+          <option key={idx} value={process_values[idx]}>{process}</option>
+      );
 
-        // if (users === null || user_loading) {
-        //     content = (
-        //         <div className="container-fluid"><Spinner /></div>
-        //     );
-        // } else {
-        //     content = (
-        //         <Users className="h-100" location={this.props.locations.highlight} user={this.props.auth.user} users={users} real_days={real_days}/>
-        //     );
-        // }
+      
 
-        return (
-        <div>
-            <Navbar />
+      // TODO:
+      let content = <div className="container"><Spinner /></div>;
 
-            <div className="container mt-2 mb-9">
-                <h1>Job (id)</h1>
+      // if (users === null || user_loading) {
+      //     content = (
+      //         <div className="container-fluid"><Spinner /></div>
+      //     );
+      // } else {
+      //     content = (
+      //         <Users className="h-100" location={this.props.locations.highlight} user={this.props.auth.user} users={users} real_days={real_days}/>
+      //     );
+      // }
 
+      return (
+      <div>
+          <Navbar />
+
+          <div className="container mt-2 mb-9">
+            {jobs_loading || job === null 
+              ? content 
+              : 
+              <div>
+                <h1>Job {job._id.$oid}</h1>
                 <div className="card">
                     <div className="card-body">
                         <h5 style={{textAlign: "right"}}>Waiting</h5>
-                        <h2>Name: (name)</h2>
-                        <h2>Description: (descriptrion)</h2>
+                        <h2><span > Name:  </span>{job.name}</h2>
+                        <h2>Description: {job.description}</h2>
 
                         <table className="table mt-5">
                             <thead style={{backgroundColor: "#024a75", color: "#ffffff"}}>
                                 <tr>
                                     <th scope="col">Created</th>
                                     <th scope="col">Started</th>
-                                    <th scope="col">Stopped</th>
+                                    {/* <th scope="col">Stopped</th> */}
                                     <th scope="col">Ended</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Created Date</td>
-                                    <td>Started Date</td>
-                                    <td>Stopped Date</td>
-                                    <td>Ended Date</td>
+                                    <td><Moment>{job.created.$date}</Moment></td>
+                                    <td><Moment>{job.started.$date}</Moment></td>
+                                    {/* <td><Moment>{job.stopped.$date}</Moment></td> */}
+                                    <td><Moment>{job.ended.$date}</Moment></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -85,24 +100,26 @@ class Job extends Component {
                         <div className="form-group row mt-5 ml-1">
                             <h3 htmlFor="inputState">Processes</h3>
                             <div className="col-sm-4 ml-3">
-                                <select id="inputState" className="form-control">
-                                    <option selected>Choose...</option>
+                                <select id="inputState" defaultValue={job.type}
+                                   className="form-control" onChange={this.handleSubmit}>
+                                    <option value="NONE">Choose...</option>
                                     {processItem}
                                 </select>
                             </div>
                         </div>
 
                         <Previews />
- 
+
                     </div>
                 </div>
+              </div>
+            }
+          </div>
 
-            </div>
-
-            <Footer />
-        </div>
-        );
-    }
+          <Footer />
+      </div>
+      );
+  }
 
 }
 
@@ -128,6 +145,7 @@ const thumb = {
 const thumbInner = {
     display: 'flex',
     minWidth: 0,
+    width:100,
     overflow: 'hidden'
 };
 
@@ -137,42 +155,59 @@ const img = {
     height: '100%'
 };
 
-function Previews(props) {
+function Previews() {
     const [files, setFiles] = useState([]);
     const {getRootProps, getInputProps} = useDropzone({
       accept: 'image/*',
       onDrop: acceptedFiles => {
-        setFiles(acceptedFiles.map(file => Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })));
+        // let aux = files;
+        // aux.push(acceptedFiles.map(file => Object.assign(file, {
+        //   preview: URL.createObjectURL(file)
+        // })));
+        // setFiles(aux);
+        setFiles([...files, acceptedFiles.map(file => Object.assign(
+            file, {
+              preview: URL.createObjectURL(file)
+            }
+          )) 
+        ]);
       }
     });
     
-    const thumbs = files.map(file => (
-      <div style={thumb} key={file.name}>
-        <div style={thumbInner}>
-          <img
-            src={file.preview}
-            style={img}
-          />
+    const thumbs = files.map((file, idx) => 
+    {
+      return (
+        <div key={idx} style={thumb} >
+          <div style={thumbInner}>
+            <img
+              width="100px"
+              height="100px"
+              src={file[0].preview}
+              style={img} />
+          </div>
         </div>
-      </div>
-    ));
+      );
+    });
   
-    useEffect(() => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach(file => URL.revokeObjectURL(file.preview));
-    }, [files]);
+    // useEffect(() => () => {
+    //   // Make sure to revoke the data uris to avoid memory leaks
+    //   files.forEach(file => URL.revokeObjectURL(file.preview));
+    // }, [files]);
 
     return (
-        <section className="container">
-          <div {...getRootProps({className: 'dropzone'})}>
+        <section className="container h-100">
+          <div  {...getRootProps({className: 'dropzone'})} style={{display:"flex", flexFlow:"column", justifyContent:"center", alignItems:"center", border:"1px dashed black", height:"200px"}}>
             <input {...getInputProps()} />
-            <p>Drag 'n' drop your images here, or click to select files</p>
+            {files.length === 0 
+              ?<p>Drag 'n' drop your images here, or click to select files</p>
+              : <aside style={thumbsContainer}>
+                  {thumbs}
+                </aside>
+            }
+            
+            
           </div>
-          <aside style={thumbsContainer}>
-            {thumbs}
-          </aside>
+          <button className={files.length > 0 ? "btn btn-lg btn-block btn-info mt-2" : "btn btn-lg btn-block btn-secondary mt-2"}>Upload</button>
         </section>
       );
 }
@@ -189,5 +224,5 @@ const mapStateToProps = state => ({
 
 export default compose(
     withRouter,
-    connect (mapStateToProps, { job_get_by_id }) 
+    connect (mapStateToProps, { job_get_by_id, job_update_type }) 
 )(Job);
