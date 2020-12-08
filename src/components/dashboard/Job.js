@@ -11,16 +11,14 @@ import Footer from '../main/Footer';
 
 import Spinner from '../common/Spinner';
 
-import TextField from '../input/TextField';
-import TextArea from '../input/TextArea';
-
-import { job_get_by_id, job_update_type, job_upload } from '../../actions/jobsActions';
+import { job_get_by_id, job_update_type, job_upload, job_start } from '../../actions/jobsActions';
 
 class Job extends Component {
 
   constructor(props){
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleStart = this.handleStart.bind(this);
   }
 
   componentDidMount () {
@@ -35,6 +33,11 @@ class Job extends Component {
     e.preventDefault();
     const job_id = this.props.match.params.job_id;
     this.props.job_update_type({id: job_id ,type: e.target.value});
+  }
+  
+  handleStart() {
+    const job_id = this.props.match.params.job_id;
+    this.props.job_start(job_id);
   }
 
   render () {
@@ -104,18 +107,32 @@ class Job extends Component {
                             </tbody>
                         </table>
 
-                        <div className="form-group row mt-5 ml-1">
-                            <h3 htmlFor="inputState">Processes</h3>
-                            <div className="col-sm-4 ml-3">
-                                <select id="inputState" defaultValue={process_values[job.type]}
-                                   className="form-control" onChange={this.handleSubmit}>
-                                    <option value="NONE">Choose...</option>
-                                    {processItem}
-                                </select>
+                        {job.status < 3 ? 
+                          <div>
+                            <div className="form-group row mt-5 ml-1">
+                                <h3 htmlFor="inputState">Processes</h3>
+                                <div className="col-sm-4 ml-3">
+                                    <select id="inputState" defaultValue={process_values[job.type]}
+                                      className="form-control" onChange={this.handleSubmit}>
+                                        <option value="NONE">Choose...</option>
+                                        {processItem}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <Previews job_id={job._id.$oid}  job_upload={this.props.job_upload}/>
+                          {/* Previous uploaded photos */}
+
+                            <Uploaded job={job} />
+                            
+                            <Previews job_id={job._id.$oid}  job_upload={this.props.job_upload}/>
+                          </div>
+                        : <Processed job={job}/>
+                        }
+                        
+                        {job.status === 2 ? 
+                          <button onClick={() => this.handleStart()} className="btn btn-lg btn-block btn-success mt-3 ">Start job</button>
+                          : null
+                        }
 
                     </div>
                 </div>
@@ -161,6 +178,58 @@ const img = {
     width: 'auto',
     height: '100%'
 };
+
+const Processed = ({job}) => {
+  return (
+    <div className="container h-100 w-100 m-5">
+      <h2 className="text-center">Processed images</h2>
+      <div style={{display:"flex", justifyContent:"space-evenly", flexFlow:"row wrap", alignItems:"center"}}>
+        {job.images.map((image, i) => (
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+            <div style={{display:"flex", justifyContent:"space-evenly", flexFlow:"column"}}>
+              <h5>Original:</h5>
+              <div style={thumb} className="ml-1">
+                  <div style={thumbInner}>
+                    <p>{image.original}</p>
+                  </div>
+                </div>
+            </div>
+            <div style={{display:"flex", justifyContent:"space-evenly", flexFlow:"column"}}>
+              <h5>Processed:</h5>
+              <div style={thumb} className="ml-1">
+                  <div style={thumbInner}>
+                    <p className="text-center"> {image.result !== 'null' ? image.result : "No result yet"}</p>
+                  </div>
+                </div>
+            </div>
+
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const Uploaded = ({job}) => {
+  return (
+    <div className="container h-100 w-100 m-5">
+          <h5 className="text-center">Previously uploaded photos</h5>
+         <div style={{display:"flex", flexFlow:"row", justifyContent:"space-evenly"}}>
+          {job.images !== undefined && job.images.length > 0
+            ? job.images.map((image) => (
+              <div style={thumb}>
+                <div style={thumbInner}>
+                  <p>{image.original}</p>
+                </div>
+              </div>
+            ))
+            : null
+          }
+          
+         </div>
+    </div>
+  )
+}
 
 function Previews(props) {
     const [files, setFiles] = useState([]);
@@ -228,6 +297,9 @@ function Previews(props) {
 Job.propTypes = { 
     jobs: PropTypes.object.isRequired,
     job_get_by_id: PropTypes.func.isRequired,
+    job_start: PropTypes.func.isRequired,
+    job_upload: PropTypes.func.isRequired,
+    job_update_type: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -237,5 +309,5 @@ const mapStateToProps = state => ({
 
 export default compose(
     withRouter,
-    connect (mapStateToProps, { job_get_by_id, job_update_type, job_upload }) 
+    connect (mapStateToProps, { job_get_by_id, job_update_type, job_upload, job_start }) 
 )(Job);
