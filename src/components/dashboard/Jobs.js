@@ -151,7 +151,7 @@ class Jobs extends Component {
                                             {
                                                 jobs.filter((j) => j.status === 2 ).map((j) => {
                                                     return (
-                                                    <tr>
+                                                    <tr onClick={() => this.fetchJob(j._id.$oid)}>
                                                         <th scope="row">{j.name}</th>
                                                         <td scope="row">{j.imagesCount}</td>
                                                         <td>{j.type}</td>
@@ -167,7 +167,7 @@ class Jobs extends Component {
                             </div>
                         </div>
                     </div>
-
+                    {/* Current */}
                     <div style={{display: "flex", justifyContent: "center", marginTop: "1%", marginBottom: "1%"}}>
                         <div className="card" style={{width: "65%"}}>
                             <div className="card-body">
@@ -186,10 +186,10 @@ class Jobs extends Component {
                                             {
                                                 jobs.filter((j) => j.status === 3 ).map((j) => {
                                                     return (
-                                                    <tr>
+                                                    <tr onClick={() => this.fetchJob(j._id.$oid)}>
                                                         <th scope="row">{j.name}</th>
                                                         <td scope="row"><Moment format="DD-MM-YYYY hh:mm:ss">{j.started.$date}</Moment></td>
-                                                        <td>{j.imagesCountMin}/{j.imageCountMax}</td>
+                                                        <td>{j.images.filter((i) => i.result !== "null").length}/{j.images.length}</td>
                                                     </tr>
                                                 )})
                                                 
@@ -220,7 +220,7 @@ class Jobs extends Component {
                                             { 
                                                 jobs.filter((j) => j.status === 6 ).map((j) => {
                                                     return (
-                                                    <tr>
+                                                    <tr onClick={() => this.fetchJob(j._id.$oid)}>
                                                         <th scope="row">{j.name}</th>
                                                         <td scope="row"><Moment format="DD-MM-YYYY hh:mm:ss">{j.started.$date}</Moment></td>
                                                         <td scope="row"><Moment format="DD-MM-YYYY hh:mm:ss">{j.ended.$date}</Moment></td>
