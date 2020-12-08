@@ -191,6 +191,12 @@ const Processed = ({job}) => {
               <div style={thumb} className="ml-1">
                   <div style={thumbInner}>
                     <p>{image.original}</p>
+                    {/* <img
+                    width="100px"
+                    height="100px"
+                    //FIXME: Modify src of image in order to be pointing to the hosted image
+                    src={image.original}
+                    style={img} /> */}
                   </div>
                 </div>
             </div>
@@ -198,7 +204,18 @@ const Processed = ({job}) => {
               <h5>Processed:</h5>
               <div style={thumb} className="ml-1">
                   <div style={thumbInner}>
-                    <p className="text-center"> {image.result !== 'null' ? image.result : "No result yet"}</p>
+                    {image.result !== 'null' 
+                      ? <p className="text-center">No results yet</p>
+                      /* <img
+                      width="100px"
+                      height="100px"
+                      //FIXME: Modify src of image in order to be pointing to the hosted image
+                      src={image.result}
+                      style={img} /> */
+                      : 
+                      <p className="text-center">{ image.result }</p>
+                    }
+                    
                   </div>
                 </div>
             </div>
@@ -220,6 +237,12 @@ const Uploaded = ({job}) => {
               <div style={thumb}>
                 <div style={thumbInner}>
                   <p>{image.original}</p>
+                  {/* <img
+                    width="100px"
+                    height="100px"
+                    //FIXME: Modify src of image in order to be pointing to the hosted image
+                    src={image.original}
+                    style={img} /> */}
                 </div>
               </div>
             ))
