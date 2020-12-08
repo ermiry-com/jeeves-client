@@ -190,13 +190,12 @@ const Processed = ({job}) => {
               <h5>Original:</h5>
               <div style={thumb} className="ml-1">
                   <div style={thumbInner}>
-                    <p>{image.original}</p>
-                    {/* <img
+                    {/* <p>{image.original}</p> */}
+                    <img
                     width="100px"
                     height="100px"
-                    //FIXME: Modify src of image in order to be pointing to the hosted image
                     src={image.original}
-                    style={img} /> */}
+                    style={img} />
                   </div>
                 </div>
             </div>
@@ -205,15 +204,20 @@ const Processed = ({job}) => {
               <div style={thumb} className="ml-1">
                   <div style={thumbInner}>
                     {image.result === 'null' 
-                      ? <p className="text-center">No results yet</p>
-                      /* <img
-                      width="100px"
-                      height="100px"
-                      //FIXME: Modify src of image in order to be pointing to the hosted image
-                      src={image.result}
-                      style={img} /> */
+                      ?
+                      <img
+                        width="100px"
+                        height="100px"
+                        src={process.env.PUBLIC_URL + '/img/no-image-square.png'}
+                        style={img}
+                      />
                       : 
-                      <p className="text-center">{ image.result }</p>
+                      <img
+                        width="100px"
+                        height="100px"
+                        src={image.result}
+                        style={img}
+                      />
                     }
                     
                   </div>
@@ -236,13 +240,12 @@ const Uploaded = ({job}) => {
             ? job.images.map((image) => (
               <div style={thumb}>
                 <div style={thumbInner}>
-                  <p>{image.original}</p>
-                  {/* <img
+                  {/* <p>{image.original}</p> */}
+                  <img
                     width="100px"
                     height="100px"
-                    //FIXME: Modify src of image in order to be pointing to the hosted image
                     src={image.original}
-                    style={img} /> */}
+                    style={img} />
                 </div>
               </div>
             ))
