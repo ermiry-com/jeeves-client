@@ -204,7 +204,7 @@ const Processed = ({job}) => {
               <h5>Processed:</h5>
               <div style={thumb} className="ml-1">
                   <div style={thumbInner}>
-                    {image.result !== 'null' 
+                    {image.result === 'null' 
                       ? <p className="text-center">No results yet</p>
                       /* <img
                       width="100px"
@@ -229,9 +229,9 @@ const Processed = ({job}) => {
 
 const Uploaded = ({job}) => {
   return (
-    <div className="container h-100 w-100 m-5">
+    <div className="container h-100 w-100 ">
           <h5 className="text-center">Previously uploaded photos</h5>
-         <div style={{display:"flex", flexFlow:"row", justifyContent:"space-evenly"}}>
+         <div className="container" style={{display:"flex", flexFlow:"row wrap", justifyContent:"space-evenly"}}>
           {job.images !== undefined && job.images.length > 0
             ? job.images.map((image) => (
               <div style={thumb}>
@@ -278,11 +278,13 @@ function Previews(props) {
       return (
         <div key={idx} style={thumb} >
           <div style={thumbInner}>
+             
             <img
-              width="100px"
-              height="100px"
-              src={file[0].preview}
-              style={img} />
+            width="100px"
+            height="100px"
+            src={file[0].preview}
+            style={img} />
+           
           </div>
         </div>
       );
