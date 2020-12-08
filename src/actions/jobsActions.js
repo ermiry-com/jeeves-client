@@ -116,6 +116,21 @@ export const job_get_by_id = id => dispatch => {
 
 }
 
+export const job_start = id => dispatch => {
+    dispatch(jobs_set_loading)
+    axios.get(`/api/jeeves/jobs/${id}/start`)
+    .then(res => {
+        window.location.href = "/jobs";
+    }).catch(err => {
+        console.error(err);
+        dispatch({
+            type: JOB_GET,
+            payload: null
+        });
+        dispatch(alert_set ("Failed to start job, retry later", 'danger'));
+    })
+}
+
 export const jobs_set_loading = () => {
     return { type: JOB_LOADING };
 };
