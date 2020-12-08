@@ -46,7 +46,7 @@ class Jobs extends Component {
     }
 
     fetchJob(job_id) {
-        window.location.href = "/job/" + job_id;
+        window.location.href = "/jobs/" + job_id;
     }
 
     render () {
