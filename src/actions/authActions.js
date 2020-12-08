@@ -10,13 +10,22 @@ import { alert_set } from './alertsActions';
 
 const cookies = new Cookies ();
 
-// set logged user
-const user_set_current = (decoded) => {
+// register a new user
+export const user_register = (userData, history) => dispatch => {
 
-    return {
-        type: SET_CURRENT_USER,
-        payload: decoded
-    }
+    dispatch (errors_clear ());
+
+    // make the request to the server
+    axios.post ('/api/users/register', userData)
+        .then (res => {
+            history.push ('/login');
+            dispatch (alert_set ('Your account has been created!', 'success', 10000));
+        })
+        .catch (err =>
+            dispatch ({
+                type: ERRORS_GET,
+                payload: err.response.data
+            }));
 
 }
 
@@ -56,11 +65,20 @@ export const user_login = (userData) => dispatch => {
 
 };
 
+// set logged user
+export const user_set_current = (decoded) => {
+
+    return {
+        type: SET_CURRENT_USER,
+        payload: decoded
+    }
+
+}
+
 // log user out
 export const user_logout = () => dispatch => {
 
     // const cookies = new Cookies ();
-    // localStorage.removeItem ('jwtToken');
     process.env.NODE_ENV === "production" ?
         cookies.remove ('ermiry-jwt', {
             path: "/", 
