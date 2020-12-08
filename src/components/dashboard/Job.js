@@ -44,8 +44,8 @@ class Job extends Component {
 			const job = this.props.jobs.job;
 			const jobs_loading = this.props.jobs.loading;
 
-			const processes = ['GrayScale', 'Shift', 'Clamp', 'RGB to HUE'];
-			const process_values = [ 'GRAYSCALE', 'SHIFT', 'CLAMP', 'RGB_TO_HUE'];
+			const processes = ['None', 'GrayScale', 'Shift', 'Clamp', 'RGB to HUE'];
+			const process_values = ['NONE', 'GRAYSCALE', 'SHIFT', 'CLAMP', 'RGB_TO_HUE'];
 			const processItem = processes.map((process, idx) =>
 					<option key={idx} value={process_values[idx]}>{process}</option>
 			);
@@ -60,70 +60,79 @@ class Job extends Component {
 					{jobs_loading || job === null 
 						? content 
 						: 
-						<div>
-							<h1>Job {job._id.$oid}</h1>
-							<div className="card">
-								<div className="card-body">
-									<h5 style={{textAlign: "right"}}>{job.status === 0 
-										? "None" 
-										: job.status === 1 ? "Waiting"
-										: job.status === 2 ? "Ready"
-										: job.status === 3 ? "Running"
-										: job.status === 6 ? "Finished"
-										: "None"
-									}</h5>
-										<h2><span > Name:  </span>{job.name}</h2>
-										<h2>Description: {job.description}</h2>
+						<div className="docs-header p-40px-b">
 
-										<table className="table mt-5">
-											<thead style={{backgroundColor: "#024a75", color: "#ffffff"}}>
-												<tr>
-													<th scope="col">Created</th>
-													<th scope="col">Started</th>
-													{/* <th scope="col">Stopped</th> */}
-													<th scope="col">Ended</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td><Moment>{job.created.$date}</Moment></td>
-													<td><Moment>{job.started.$date}</Moment></td>
-													{/* <td><Moment>{job.stopped.$date}</Moment></td> */}
-													<td><Moment>{job.ended.$date}</Moment></td>
-												</tr>
-											</tbody>
-										</table>
+						<h4 className="main-dark-blue font-w-700 font-40px md-font-30px sm-font-20px">
+							Job {job._id.$oid}
+						</h4>
 
-										{job.status < 3 ? 
-											<div>
-												<div className="form-group row mt-5 ml-1">
-													<h3 htmlFor="inputState">Processes</h3>
-													<div className="col-sm-4 ml-3">
-														<select id="inputState" defaultValue={process_values[job.type]}
-															className="form-control" onChange={this.handleSubmit}>
-																<option value="NONE">Choose...</option>
-																{processItem}
-														</select>
-													</div>
+						<br></br>
+
+						<div className="card">
+							<div className="card-body">
+								<h3 className="main-dark-blue" style={{textAlign: "right", padding: 16}}>{job.status === 0 
+									? "None" 
+									: job.status === 1 ? "Waiting"
+									: job.status === 2 ? "Ready"
+									: job.status === 3 ? "Running"
+									: job.status === 6 ? "Finished"
+									: "None"
+								}</h3>
+									<h2><span className="main-dark-blue">Name		</span>{job.name}</h2>
+									<h2><span className="main-dark-blue">Description		</span> {job.description}</h2>
+
+									<table className="table mt-5">
+										<thead style={{backgroundColor: "#024a75", color: "#ffffff"}}>
+											<tr>
+												<th scope="col">Created</th>
+												<th scope="col">Started</th>
+												{/* <th scope="col">Stopped</th> */}
+												<th scope="col">Ended</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><Moment>{job.created.$date}</Moment></td>
+												<td><Moment>{job.started.$date}</Moment></td>
+												{/* <td><Moment>{job.stopped.$date}</Moment></td> */}
+												<td><Moment>{job.ended.$date}</Moment></td>
+											</tr>
+										</tbody>
+									</table>
+
+									{job.status < 3 ? 
+										<div>
+											<div className="form-group row mt-5 ml-1">
+												<h3 htmlFor="inputState">Processes</h3>
+												<div className="col-sm-4 ml-3">
+													<select id="inputState" defaultValue={process_values[job.type]}
+														className="form-control" onChange={this.handleSubmit}>
+															<option value="NONE">Choose...</option>
+															{processItem}
+													</select>
 												</div>
-
-												{/* Previous uploaded photos */}
-												<Uploaded job={job} />
-												
-												<Previews job_id={job._id.$oid}  job_upload={this.props.job_upload}/>
 											</div>
-										: <Processed job={job}/>
-										}
-										
-										{job.status === 2 ? 
-											<button onClick={() => this.handleStart()} className="btn btn-lg btn-block btn-success mt-3 ">Start job</button>
-											: null
-										}
-								</div>
+
+											{/* Previous uploaded photos */}
+											<Uploaded job={job} />
+											
+											<Previews job_id={job._id.$oid}  job_upload={this.props.job_upload}/>
+										</div>
+									: <Processed job={job}/>
+									}
+									
+									{job.status === 2 ? 
+										<button onClick={() => this.handleStart()} className="btn btn-lg btn-block btn-success mt-3 ">Start job</button>
+										: null
+									}
 							</div>
 						</div>
+					</div>
 					}
 				</div>
+
+				<br></br>
+				<br></br>
 
 				<Footer />
 			</div>

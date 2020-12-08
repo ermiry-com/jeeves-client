@@ -15,6 +15,27 @@ import TextArea from '../input/TextArea';
 
 import { jobs_get_all, jobs_create } from '../../actions/jobsActions';
 
+class Header extends Component {
+
+	render () {
+		return (
+		<section className="docs-header p-40px-b">
+			<div className="container">
+				<div className="row align-items-center justify-content-center">
+					<div className="col-12 col-lg-8 text-center">
+						<div>
+							<h1 className="main-dark-blue font-w-700 font-60px md-font-40px sm-font-30px">Jobs</h1>
+							<br></br>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		);
+	}
+
+}
+
 class Jobs extends Component {
 
 	constructor(props){
@@ -58,6 +79,9 @@ class Jobs extends Component {
 		return (
 		<div>
 			<Navbar />
+			
+			<Header />
+
 			{/* Create div */}
 			<div style={{display: "flex", justifyContent: "center", marginTop: "1%", marginBottom: "1%"}}>
 				<div className="card" style={{width: "65%"}}>
@@ -113,7 +137,7 @@ class Jobs extends Component {
 													)})}
 												</tbody>
 										</table>
-										: <h4 style={{fontWeight:"500"}}>There are no waiting jobs yet, create one first.</h4>
+										: <h4 style={{fontWeight:"500"}}>There are no waiting jobs, create one</h4>
 									}
 								</div>
 						</div>
@@ -147,7 +171,7 @@ class Jobs extends Component {
 											}
 										</tbody>
 								</table>
-									: <h4 style={{fontWeight:"500"}}>There are no jobs ready yet</h4>
+									: <h4 style={{fontWeight:"500"}}>There are no ready jobs</h4>
 								}
 							</div>
 						</div>
@@ -180,7 +204,7 @@ class Jobs extends Component {
 											}
 										</tbody>
 									</table>
-									:<h4 style={{fontWeight:"500"}}>There are no jobs running yet</h4>
+									:<h4 style={{fontWeight:"500"}}>There are no jobs running</h4>
 								}
 							</div>
 						</div>
@@ -214,13 +238,16 @@ class Jobs extends Component {
 												}
 											</tbody>
 										</table>
-										: <h4 style={{fontWeight:"500"}}>There are no jobs finished yet</h4>
+										: <h4 style={{fontWeight:"500"}}>There are no finished jobs</h4>
 									}
 							</div>
 						</div>
 					</div>
 				</div>
 			}
+
+			<br></br>
+
 			<Footer />
 		</div>
 		);
