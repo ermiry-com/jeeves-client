@@ -18,9 +18,9 @@ class Header extends Component {
 						<div className="p-70px-l md-p-0px-l md-m-30px-t">
 							<h2 className="font-w-600 font-100px md-font-80px sm-font-70px main-blue">Jeeves</h2>
 							<p className="font-24px">
-							Tiny Pocket is a minimalistic mobile app that helps you keep track of your expenses and organize them by different categories.
+							Prepare, Build, Train, Tune & Manage your custom ML models in one place!
 							</p>
-							<h2 className="main-dark-blue">Live your life smarter with us!</h2>
+							{/* <h2 className="main-dark-blue">Live your life smarter with us!</h2> */}
 						</div>
 					</div>
 				</div>

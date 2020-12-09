@@ -33,8 +33,8 @@ const TextArea = ({
 
 TextArea.propTypes = {
 	name: PropTypes.string.isRequired,
-	cols: PropTypes.string.isRequired,
-	rows: PropTypes.string.isRequired,
+	cols: PropTypes.string,
+	rows: PropTypes.string,
 	placeholder: PropTypes.string,
 	value: PropTypes.string.isRequired,
 	info: PropTypes.string,

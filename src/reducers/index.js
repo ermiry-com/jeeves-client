@@ -6,6 +6,8 @@ import alertReducer from './alertsReducer';
 
 import authReducer from './authReducer';
 
+import jobsReducer from './jobsReducer';
+
 export default combineReducers ({
 
     errors: errorReducer,
@@ -13,5 +15,7 @@ export default combineReducers ({
     alert: alertReducer,
 
     auth: authReducer,
+
+    jobs: jobsReducer
 
 });

@@ -8,9 +8,17 @@ import store from './store';
 // main components
 import Landing from './components/main/Landing';
 
+// auth components
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+
+// dashboard
+import Jobs from './components/dashboard/Jobs';
+import Job from './components/dashboard/Job';
+
 // other
 import NotFound from './router/NotFound'
-// import PrivateRoute from './router/PrivateRoute';
+import PrivateRoute from './router/PrivateRoute';
 
 // my actions
 import { user_token_check } from './actions/authActions';
@@ -27,6 +35,14 @@ class App extends Component {
 						<Switch>
 							{/* Main */}
 							<Route exact path='/' component={ Landing } />
+
+							{/* Main */}
+							<Route exact path="/login" component={ Login } />
+							<Route exact path="/register" component={ Register } />
+
+							{/* Dashboard */}
+							<PrivateRoute exact path="/jobs" component={ Jobs } />
+							<PrivateRoute exact path="/jobs/:job_id" component={ Job } />
 
 							{/* Other */}
 							<Route exact path='/404' component={ NotFound } />
